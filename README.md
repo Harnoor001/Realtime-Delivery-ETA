@@ -28,9 +28,8 @@ The ETA shown at checkout is the least certain one, so the service re-predicts a
 ## Architecture
 
 ```mermaid
-flowchart LR
+flowchart TB
     subgraph ONLINE["Online · every order · target p99 < 100 ms"]
-        direction TB
         A[Order + GPS events<br/>city simulator] --> B[Kafka<br/>event stream]
         B --> C[Stream features<br/>live prep time, rider load]
         C --> D[(Redis<br/>online feature store)]
@@ -39,7 +38,6 @@ flowchart LR
     end
 
     subgraph OFFLINE["Offline · the learning loop"]
-        direction TB
         G[(Data lake<br/>predicted vs actual)] --> H[Retrain + backtest<br/>Airflow · MLflow]
         I[Drift monitor<br/>late-promise rate] -->|trigger| H
     end
